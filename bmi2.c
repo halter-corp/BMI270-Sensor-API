@@ -2704,7 +2704,7 @@ int8_t bmi2_get_fifo_config(uint16_t *fifo_config, struct bmi2_dev *dev)
         if (rslt == BMI2_OK)
         {
             (*fifo_config) = (uint16_t)((uint16_t) data[0] & BMI2_FIFO_CONFIG_0_MASK);
-            (*fifo_config) |= (uint16_t)(((uint16_t) data[1] << 8) & BMI2_FIFO_CONFIG_1_MASK);
+            (*fifo_config) |= (uint16_t)(((uint16_t)data[1] << 8) & BMI2_FIFO_CONFIG_1_MASK);
         }
     }
     else
@@ -2712,6 +2712,13 @@ int8_t bmi2_get_fifo_config(uint16_t *fifo_config, struct bmi2_dev *dev)
         rslt = BMI2_E_NULL_PTR;
     }
 
+    return rslt;
+}
+
+int8_t bmi2_read_fifo_data_raw(void *data, size_t length, struct bmi2_dev *dev)
+{
+    int8_t rslt;
+    rslt = bmi2_get_regs(BMI2_FIFO_DATA_ADDR, data, length, dev);
     return rslt;
 }
 
@@ -8726,8 +8733,9 @@ static void saturate_gyro_data(struct bmi2_sens_axes_data *gyr_off)
  * @brief This internal API is used to validate the device structure pointer for
  * null conditions.
  */
-static int8_t null_ptr_check(const struct bmi2_dev *dev)
+static inline int8_t null_ptr_check(const struct bmi2_dev *dev)
 {
+#ifdef CONFIG_BMI2_ENABLE_NULL_CHECK
     int8_t rslt = BMI2_OK;
 
     if ((dev == NULL) || (dev->read == NULL) || (dev->write == NULL) || (dev->delay_us == NULL))
@@ -8737,6 +8745,10 @@ static int8_t null_ptr_check(const struct bmi2_dev *dev)
     }
 
     return rslt;
+#else
+    (void)dev;
+    return BMI2_OK;
+#endif
 }
 
 /*!
