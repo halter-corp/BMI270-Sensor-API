@@ -580,6 +580,8 @@ int8_t bmi2_get_fifo_config(uint16_t *fifo_config, struct bmi2_dev *dev);
  */
 int8_t bmi2_read_fifo_data(struct bmi2_fifo_frame *fifo, struct bmi2_dev *dev);
 
+int8_t bmi2_read_fifo_data_raw(void *data, size_t length, struct bmi2_dev *dev);
+
 /*!
  * \ingroup bmi2ApiFIFO
  * \page bmi2_api_bmi2_extract_accel bmi2_extract_accel
