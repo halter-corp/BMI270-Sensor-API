@@ -516,7 +516,7 @@ const struct bmi2_feature_config bmi270_feat_out[BMI270_MAX_FEAT_OUT] = {
 };
 
 /*! @name  Global array that stores the feature interrupts of BMI270 */
-struct bmi2_map_int bmi270_map_int[BMI270_MAX_INT_MAP] = {
+const struct bmi2_map_int bmi270_map_int[BMI270_MAX_INT_MAP] = {
     { .type = BMI2_SIG_MOTION, .sens_map_int = BMI270_INT_SIG_MOT_MASK },
     { .type = BMI2_STEP_COUNTER, .sens_map_int = BMI270_INT_STEP_COUNTER_MASK },
     { .type = BMI2_STEP_DETECTOR, .sens_map_int = BMI270_INT_STEP_DETECTOR_MASK },

@@ -2409,7 +2409,7 @@ struct bmi2_dev
     bmi2_tap_fptr_t set_tap_config;
 
     /*! Array of feature interrupts configuration structure */
-    struct bmi2_map_int *map_int;
+    const struct bmi2_map_int *map_int;
 
     /*! To define maximum number of interrupts */
     uint8_t sens_int_map;
