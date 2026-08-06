@@ -516,7 +516,7 @@ const struct bmi2_feature_config bmi270_feat_out[BMI270_MAX_FEAT_OUT] = {
 };
 
 /*! @name  Global array that stores the feature interrupts of BMI270 */
-struct bmi2_map_int bmi270_map_int[BMI270_MAX_INT_MAP] = {
+const struct bmi2_map_int bmi270_map_int[BMI270_MAX_INT_MAP] = {
     { .type = BMI2_SIG_MOTION, .sens_map_int = BMI270_INT_SIG_MOT_MASK },
     { .type = BMI2_STEP_COUNTER, .sens_map_int = BMI270_INT_STEP_COUNTER_MASK },
     { .type = BMI2_STEP_DETECTOR, .sens_map_int = BMI270_INT_STEP_DETECTOR_MASK },
@@ -542,7 +542,15 @@ struct bmi2_map_int bmi270_map_int[BMI270_MAX_INT_MAP] = {
  * @retval 0 -> Success
  * @retval < 0 -> Fail
  */
+#ifdef CONFIG_BMI270_CHECK_NULL_PTR
 static int8_t null_ptr_check(const struct bmi2_dev *dev);
+#else
+static inline int8_t null_ptr_check(const struct bmi2_dev *dev)
+{
+    return BMI2_OK;
+}
+#endif
+
 
 /*!
  * @brief This internal API enables the selected sensor/features.
@@ -1385,7 +1393,6 @@ int8_t bmi270_sensor_disable(const uint8_t *sens_list, uint8_t n_sens, struct bm
     {
         rslt = BMI2_E_NULL_PTR;
     }
-
     return rslt;
 }
 
@@ -1913,6 +1920,7 @@ int8_t bmi270_map_feat_int(const struct bmi2_sens_int_config *sens_int, uint8_t 
  * @brief This internal API is used to validate the device structure pointer for
  * null conditions.
  */
+#ifdef CONFIG_BMI270_CHECK_NULL_PTR
 static int8_t null_ptr_check(const struct bmi2_dev *dev)
 {
     /* Variable to define error */
@@ -1926,6 +1934,7 @@ static int8_t null_ptr_check(const struct bmi2_dev *dev)
 
     return rslt;
 }
+#endif
 
 /*!
  * @brief This internal API selects the sensor/features to be enabled or
